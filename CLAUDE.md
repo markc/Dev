@@ -2,6 +2,52 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Repository Architecture
+
+This is a **parent repository with Git submodules**. Each project is an independent repo that can be cloned separately, but this parent provides single-command workspace setup.
+
+### Clone Commands
+
+```bash
+# Full workspace (for Mark's backup/restore)
+git clone --recurse-submodules git@github.com:markc/Dev.git
+
+# Individual projects (for others)
+git clone git@github.com:markc/aitxt.git
+git clone git@github.com:markc/rentanet.git
+git clone git@github.com:markc/spe.git
+git clone git@github.com:markc/appmesh.git
+git clone git@github.com:netserva/monorepo.git
+```
+
+### Submodule Workflow
+
+**IMPORTANT:** When working in submodules, changes require TWO commits:
+
+```bash
+# 1. Commit and push in the submodule
+cd ~/Dev/spe
+git add -A && git commit -m "Your change" && git push
+
+# 2. Update parent to track new submodule commit
+cd ~/Dev
+git add spe && git commit -m "Update spe submodule" && git push
+```
+
+**Pulling updates:**
+```bash
+cd ~/Dev
+git pull
+git submodule update --remote --merge
+```
+
+**Check all submodule status:**
+```bash
+git submodule status
+# or more detail:
+for d in */; do echo "=== $d ===" && git -C "$d" status -sb 2>/dev/null; done
+```
+
 ## Important: Project Focus
 
 **Always `cd` into a project directory before starting Claude Code.** Each project has its own CLAUDE.md with specific instructions, patterns, and context. Running from `~/Dev` should only be used for cross-project investigation or comparison tasks.
@@ -10,23 +56,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # For focused work on a single project
 cd ~/Dev/spe && claude
 
-# Only for cross-project tasks (like today's cleanup)
+# Only for cross-project tasks
 cd ~/Dev && claude
 ```
 
 ## Project Portfolio
 
-Seven focused projects, organized like chapters in a book:
+Five projects as Git submodules:
 
-| # | Project | Purpose | Tech Stack |
-|---|---------|---------|------------|
-| 1 | **aitxt** | ai.txt specification standard | Static site (aitxt.ing) |
-| 2 | **appmesh** | Desktop app orchestration via D-Bus/OSC | PHP MCP server |
-| 3 | **hcp** | Original Hosting Control Panel | Pure PHP + Bootstrap 5 |
-| 4 | **netserva** | NetServa 3.0 infrastructure platform | Laravel 12 + Filament 4 |
-| 5 | **rentanet** | RentaNet business website | Static HTML/CSS/JS |
-| 6 | **spe** | PHP micro-framework tutorial (10 chapters) | Pure PHP 8.5 |
-| 7 | **vnodes** | Server operations workspace | Markdown journals |
+| # | Project | Purpose | Tech Stack | Repo |
+|---|---------|---------|------------|------|
+| 1 | **aitxt** | ai.txt specification standard | Static site (aitxt.ing) | markc/aitxt |
+| 2 | **appmesh** | Desktop app orchestration via D-Bus/OSC | PHP MCP server | markc/appmesh |
+| 3 | **netserva** | NetServa 3.0 infrastructure platform | Laravel 12 + Filament 4 | netserva/monorepo |
+| 4 | **rentanet** | RentaNet business website | Static HTML/CSS/JS | markc/rentanet |
+| 5 | **spe** | PHP micro-framework tutorial (11 chapters) | Pure PHP 8.5 | markc/spe |
+
+### Related but Separate
+
+| Location | Purpose | Visibility |
+|----------|---------|------------|
+| `~/.ns/` | NetServa vnode operations workspace | Private repo |
+| `~/.rc/` | Shell configuration (dotfiles) | Public repo |
 
 ## Project Summaries
 
@@ -41,37 +92,27 @@ Desktop automation through application mesh networking - the modern successor to
 - **Key files:** `server/appmesh-mcp.php`, `server/plugins/dbus.php`
 - **Run:** `php server/appmesh-mcp.php` or via MCP config
 
-### 3. hcp
-Original PHP-based Hosting Control Panel (reference implementation).
-- **Purpose:** Reference for porting to `spe/11-HCP`
-- **Key files:** `lib/php/plugins/*.php` (13 plugins: accounts, auth, domains, vmails, etc.)
-- **Note:** Bootstrap 5, single-file PHP architecture
-
-### 4. netserva
+### 3. netserva
 NetServa 3.0 Platform - comprehensive infrastructure management.
 - **Stack:** Laravel 12 + Filament 4 + Pest 4 + phpseclib
-- **Architecture:** Plugin-based packages (core, dns, mail, web, wg, fleet, etc.)
-- **Packages:** Published on Packagist as `netserva/*`
+- **Architecture:** Plugin-based local packages (core, dns, mail, web, wg, fleet)
+- **Note:** Packages use local path repositories, not Packagist
 - **Run:** `composer run dev`
 
-### 5. rentanet
+### 4. rentanet
 Static marketing website for Australian hosting company (renta.net).
 - **Framework:** Modular CSS/JS architecture (base.* + site.*)
 - **Key pattern:** `ai.txt` as content source, `base.txt`/`site.txt` for structure
+- **Path strategy:** Relative paths for dual-context serving (see rentanet/CLAUDE.md)
 - **Deploy:** Push to main triggers webhook
 
-### 6. spe
-Progressive PHP 8.5 micro-framework tutorial in 10 chapters.
-- **Chapters:** 00-Tutorial through 10-YouTube, each builds on previous
+### 5. spe
+Progressive PHP 8.5 micro-framework tutorial in 11 chapters.
+- **Chapters:** 00-Tutorial through 10-Htmx, plus 11-HCP
 - **Key features:** Pipe operator (`|>`), asymmetric visibility, CRUDL pattern
+- **Legacy reference:** `11-HCP/hcp-legacy/` contains original HCP for porting
 - **Docs:** https://markc.github.io/spe/
 - **Run:** `php -S localhost:8000` from root
-
-### 7. vnodes
-Operations workspace for managing NetServa vnodes via SSH.
-- **Structure:** Per-vnode folders with notes.md and journal entries
-- **Workflow:** `sx <vnode>` → auto-creates folder → journals work
-- **Key files:** `standards.md` (global conventions), `<vnode>/notes.md`
 
 ## Cross-Pollination Philosophy
 
@@ -101,7 +142,7 @@ Used by: **aitxt** (defines it), **rentanet**, **netserva**
 - Cascading discovery up directory tree
 
 ### Plugin Architecture
-Used by: **hcp** (PHP plugins), **spe** (chapter plugins), **netserva** (Composer packages), **appmesh** (protocol plugins)
+Used by: **spe** (chapter plugins), **netserva** (Composer packages), **appmesh** (protocol plugins)
 - Self-contained modules with standard interface
 - Discovery and registration patterns
 
@@ -122,27 +163,17 @@ cd ~/Dev && php -S localhost:8000 index.php
 | `http://localhost:8000/spe/09-Blog/` | spe chapter 09 |
 | `http://localhost:8000/rentanet/` | rentanet static site |
 | `http://localhost:8000/aitxt/` | aitxt static site |
-| `http://localhost:8000/hcp/` | hcp PHP app |
 | `http://localhost:8000/netserva/` | netserva Laravel (public/) |
 | `http://localhost:8000/appmesh/` | appmesh files |
-| `http://localhost:8000/vnodes/` | vnodes markdown |
 
 ### How It Works
 
 `index.php` routes requests by project prefix:
 - **spe**: Delegates to spe's own router (handles chapters, docs)
 - **Static sites** (rentanet, aitxt): Serves files directly
-- **PHP projects** (hcp): Executes PHP files
 - **Laravel** (netserva): Routes to public/ directory
 
 No more juggling multiple servers on different ports!
-
-## Git Status Overview
-
-```bash
-# Check all projects at once
-for d in */; do echo "=== $d ===" && git -C "$d" status -sb 2>/dev/null; done
-```
 
 ## When Improving Shared Components
 
@@ -154,6 +185,11 @@ for d in */; do echo "=== $d ===" && git -C "$d" status -sb 2>/dev/null; done
 
 This keeps all projects benefiting from ongoing refinements rather than diverging.
 
-## Pending Items
+## Session History
 
-- **spe**: 3 unpushed commits with PHP syntax errors (unescaped quotes in heredocs need fixing)
+### 2026-01-25
+- Reorganized Dev as submodule-based parent repo
+- Moved `hcp` into `spe/11-HCP/hcp-legacy/` as reference material
+- Moved `vnodes` to `~/.ns/` (private operations workspace)
+- Created `markc/Dev` GitHub repo with 5 submodules
+- Added relative path documentation to rentanet/CLAUDE.md

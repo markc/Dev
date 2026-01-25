@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dev Portal</title>
+    <link rel="stylesheet" href="spe/docs/base.css">
+    <link rel="stylesheet" href="spe/docs/site.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>(function(){var s=JSON.parse(localStorage.getItem('base-state')||'{}'),t=s.theme,h=document.documentElement;h.className='preload '+(t||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));})()</script>
+    <style>
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            padding: var(--space-6);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .project-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .project-card:hover {
+            transform: translateY(var(--hover-lift));
+            box-shadow: var(--hover-shadow);
+        }
+        .project-card h2 {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+            font-size: var(--text-xl);
+        }
+        .project-card h2 .number {
+            background: var(--accent);
+            color: var(--bg-primary);
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+        .project-card .tech {
+            font-size: var(--text-sm);
+            color: var(--fg-muted);
+            margin-bottom: var(--space-4);
+        }
+        .project-card p {
+            color: var(--fg-secondary);
+            margin-bottom: var(--space-4);
+            line-height: var(--leading-relaxed);
+        }
+        .project-card .links {
+            display: flex;
+            gap: var(--space-3);
+            flex-wrap: wrap;
+        }
+        .project-card .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            color: var(--fg-primary);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            transition: background var(--transition-fast);
+        }
+        .project-card .links a:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+        .project-card .links a svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--text-xs);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-sm);
+            margin-left: auto;
+        }
+        .status.active { background: #22c55e20; color: #22c55e; }
+        .status.reference { background: #3b82f620; color: #3b82f6; }
+        .header {
+            text-align: center;
+            padding: var(--space-8) var(--space-6);
+            border-bottom: 1px solid var(--border-primary);
+        }
+        .header h1 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-2);
+        }
+        .header p {
+            color: var(--fg-muted);
+        }
+        .header-actions {
+            margin-top: var(--space-4);
+            display: flex;
+            justify-content: center;
+            gap: var(--space-3);
+        }
+        .header-actions button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: var(--space-2) var(--space-4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            transition: background var(--transition-fast);
+        }
+        .header-actions button:hover {
+            background: var(--bg-secondary);
+        }
+        .header-actions button svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        .tip {
+            max-width: 800px;
+            margin: var(--space-6) auto;
+            padding: var(--space-4) var(--space-6);
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            color: var(--fg-secondary);
+        }
+        .tip code {
+            background: var(--bg-secondary);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1>Dev Portal</h1>
+    <p>7 focused projects in ~/Dev</p>
+    <div class="header-actions">
+        <button onclick="toggleTheme()"><i data-lucide="moon"></i> Theme</button>
+        <a href="https://github.com/markc" target="_blank" style="text-decoration:none">
+            <button><i data-lucide="github"></i> GitHub</button>
+        </a>
+    </div>
+</header>
+
+<div class="tip">
+    <strong>Unified Server:</strong> Run <code>cd ~/Dev && php -S localhost:8000 index.php</code> to serve ALL projects.
+    Access any project at <code>/project/</code> (e.g., <code>/spe/</code>, <code>/rentanet/</code>).
+    For Claude Code, still <code>cd ~/Dev/project && claude</code> for focused context.
+</div>
+
+<div class="project-grid">
+    <article class="project-card">
+        <h2>
+            <span class="number">1</span>
+            aitxt
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">Static Site</div>
+        <p>Universal standard for AI-readable context files. Prevents AI hallucination by providing authoritative facts about any resource.</p>
+        <div class="links">
+            <a href="https://aitxt.ing" target="_blank"><i data-lucide="globe"></i> Website</a>
+            <a href="https://github.com/markc/aitxt" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/aitxt/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">2</span>
+            appmesh
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">PHP MCP Server</div>
+        <p>Desktop automation through application mesh networking. Modern successor to ARexx using D-Bus and OSC protocols.</p>
+        <div class="links">
+            <a href="https://github.com/markc/appmesh" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/appmesh/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">3</span>
+            hcp
+            <span class="status reference">Reference</span>
+        </h2>
+        <div class="tech">Pure PHP + Bootstrap 5</div>
+        <p>Original Hosting Control Panel. Reference implementation for porting to spe/11-HCP. 13 plugins for mail, web, and DNS management.</p>
+        <div class="links">
+            <a href="https://github.com/markc/hcp" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/hcp/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">4</span>
+            netserva
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">Laravel 12 + Filament 4</div>
+        <p>NetServa 3.0 Platform - comprehensive infrastructure management. Plugin-based packages for DNS, mail, web, VPN, and fleet orchestration.</p>
+        <div class="links">
+            <a href="https://github.com/netserva/monorepo" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="https://packagist.org/packages/netserva/" target="_blank"><i data-lucide="package"></i> Packagist</a>
+            <a href="/netserva/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">5</span>
+            rentanet
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">Static HTML/CSS/JS</div>
+        <p>RentaNet business website for Australian web hosting. Uses modular base.css/site.css architecture with ai.txt for content.</p>
+        <div class="links">
+            <a href="https://renta.net" target="_blank"><i data-lucide="globe"></i> Website</a>
+            <a href="https://github.com/markc/rentanet" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/rentanet/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">6</span>
+            spe
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">Pure PHP 8.5</div>
+        <p>Progressive micro-framework tutorial in 10+ chapters. Features pipe operator, asymmetric visibility, and CRUDL patterns.</p>
+        <div class="links">
+            <a href="https://markc.github.io/spe/" target="_blank"><i data-lucide="globe"></i> Docs</a>
+            <a href="https://github.com/markc/spe" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/spe/"><i data-lucide="folder"></i> Local</a>
+            <a href="/spe/docs/"><i data-lucide="book-open"></i> Docs</a>
+        </div>
+    </article>
+
+    <article class="project-card">
+        <h2>
+            <span class="number">7</span>
+            vnodes
+            <span class="status active">Active</span>
+        </h2>
+        <div class="tech">Markdown Journals</div>
+        <p>Operations workspace for managing NetServa vnodes via SSH. Per-vnode notes and daily journals for server administration.</p>
+        <div class="links">
+            <a href="https://github.com/markc/vnodes" target="_blank"><i data-lucide="github"></i> GitHub</a>
+            <a href="/vnodes/"><i data-lucide="folder"></i> Local</a>
+        </div>
+    </article>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.classList.contains('dark') ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.classList.remove(current);
+        html.classList.add(next);
+        const state = JSON.parse(localStorage.getItem('base-state') || '{}');
+        state.theme = next;
+        localStorage.setItem('base-state', JSON.stringify(state));
+    }
+
+    // Remove preload class after page loads
+    window.addEventListener('load', () => {
+        document.documentElement.classList.remove('preload');
+    });
+</script>
+</body>
+</html>

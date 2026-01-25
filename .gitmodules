@@ -1,0 +1,15 @@
+[submodule "aitxt"]
+	path = aitxt
+	url = git@github.com:markc/aitxt.git
+[submodule "appmesh"]
+	path = appmesh
+	url = git@github.com:markc/appmesh.git
+[submodule "rentanet"]
+	path = rentanet
+	url = git@github.com:markc/rentanet.git
+[submodule "spe"]
+	path = spe
+	url = git@github.com:markc/spe.git
+[submodule "netserva"]
+	path = netserva
+	url = git@github.com:netserva/monorepo.git

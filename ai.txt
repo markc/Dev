@@ -1,0 +1,33 @@
+---
+updated: 2026-01-25
+scope: /
+---
+
+# Dev Workspace
+
+Unified development workspace for Mark Constable's projects, organized as a Git submodule parent repository.
+
+## Purpose
+
+Single-command workspace setup (`git clone --recurse-submodules`) while keeping all projects independently clonable for others.
+
+## Projects
+
+| Project | Description | ai.txt |
+|---------|-------------|--------|
+| [aitxt](aitxt/) | ai.txt specification standard (aitxt.ing) | [aitxt/ai.txt](aitxt/ai.txt) |
+| [appmesh](appmesh/) | Desktop automation via D-Bus/OSC | [appmesh/ai.txt](appmesh/ai.txt) |
+| [netserva](netserva/) | Infrastructure platform (Laravel + Filament) | [netserva/ai.txt](netserva/ai.txt) |
+| [rentanet](rentanet/) | Static business website (renta.net) | [rentanet/ai.txt](rentanet/ai.txt) |
+| [spe](spe/) | PHP 8.5 micro-framework tutorial | [spe/ai.txt](spe/ai.txt) |
+
+## Architecture
+
+- **Submodules**: Each project is an independent Git repo
+- **Unified server**: `php -S localhost:8000 index.php` serves all projects
+- **Cross-pollination**: Shared CSS framework (base.css/site.css) across projects
+
+## Related
+
+- `~/.ns/` - Private NetServa operations workspace
+- `~/.rc/` - Public dotfiles repository

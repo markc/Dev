@@ -15,11 +15,11 @@ Single-command workspace setup (`git clone --recurse-submodules`) while keeping 
 
 | Project | Description | ai.txt |
 |---------|-------------|--------|
-| [aitxt](aitxt/) | ai.txt specification standard (aitxt.ing) | [aitxt/ai.txt](aitxt/ai.txt) |
-| [appmesh](appmesh/) | Desktop automation via D-Bus/OSC | [appmesh/ai.txt](appmesh/ai.txt) |
-| [netserva](netserva/) | Infrastructure platform (Laravel + Filament) | [netserva/ai.txt](netserva/ai.txt) |
-| [rentanet](rentanet/) | Static business website (renta.net) | [rentanet/ai.txt](rentanet/ai.txt) |
-| [spe](spe/) | PHP 8.5 micro-framework tutorial | [spe/ai.txt](spe/ai.txt) |
+| aitxt | ai.txt specification standard (aitxt.ing) | https://raw.githubusercontent.com/markc/aitxt/main/ai.txt |
+| appmesh | Desktop automation via D-Bus/OSC | https://raw.githubusercontent.com/markc/appmesh/main/ai.txt |
+| netserva | Infrastructure platform (Laravel + Filament) | https://raw.githubusercontent.com/netserva/monorepo/main/ai.txt |
+| rentanet | Static business website (renta.net) | https://raw.githubusercontent.com/markc/rentanet/main/ai.txt |
+| spe | PHP 8.5 micro-framework tutorial | https://raw.githubusercontent.com/markc/spe/main/ai.txt |
 
 ## Architecture
 

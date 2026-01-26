@@ -13,3 +13,6 @@
 [submodule "netserva"]
 	path = netserva
 	url = git@github.com:netserva/monorepo.git
+[submodule "laracrm"]
+	path = laracrm
+	url = git@github.com:markc/laracrm.git

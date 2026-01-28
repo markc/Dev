@@ -19,6 +19,3 @@
 [submodule "motd"]
 	path = motd
 	url = git@github.com:markc/motd.git
-[submodule "motd-admin"]
-	path = motd-admin
-	url = git@github.com:markc/motd-admin.git
